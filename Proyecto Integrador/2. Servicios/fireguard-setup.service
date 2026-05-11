@@ -1,0 +1,17 @@
+[Unit]
+Description=FireGuard - Servidor de configuración (Flask)
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/home/fisica1/sistema_incendios
+ExecStart=/usr/bin/python3 /home/fisica1/sistema_incendios/app.py
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

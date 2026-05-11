@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aegnis — Configuración</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #ffffff;
+    color: #1a1a1a;
+    min-height: 100vh;
+    padding: 32px 16px 60px;
+  }
+
+  .wrap { max-width: 460px; margin: 0 auto; }
+
+  /* Header */
+  .header { margin-bottom: 36px; }
+
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+
+  .brand-name {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    color: #1a1a1a;
+  }
+
+  .brand-sub {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.5;
+    margin-top: 4px;
+  }
+
+  .btn-about {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #666;
+    background: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+    white-space: nowrap;
+    margin-top: 4px;
+  }
+  .btn-about:hover { border-color: #999; color: #1a1a1a; }
+
+  hr { border: none; border-top: 1px solid #e5e5e5; margin-bottom: 24px; }
+
+  /* Status */
+  .status-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    margin-bottom: 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #666;
+    background: #fafafa;
+  }
+
+  .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #f59e0b;
+    flex-shrink: 0;
+    animation: blink 1.5s ease-in-out infinite;
+  }
+  .dot.ok  { background: #22c55e; animation: none; }
+  .dot.err { background: #ef4444; animation: none; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+  /* Steps */
+  .steps {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+
+  .step { display: flex; align-items: center; gap: 7px; }
+
+  .step-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid #ccc;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 500;
+    color: #aaa;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .step-num.active { border-color: #1a1a1a; color: #1a1a1a; }
+  .step-num.done   { border-color: #22c55e; background: #22c55e; color: #fff; }
+
+  .step-lbl {
+    font-size: 12px;
+    color: #aaa;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .step-lbl.active { color: #1a1a1a; }
+  .step-lbl.done   { color: #22c55e; }
+
+  .step-line { flex: 1; height: 1px; background: #e5e5e5; margin: 0 10px; }
+
+  /* Card */
+  .card {
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    padding: 24px;
+    display: none;
+    background: #fff;
+  }
+  .card.active { display: block; }
+
+  .card-title { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+  .card-desc  { font-size: 13px; color: #666; line-height: 1.6; margin-bottom: 22px; }
+
+  /* Fields */
+  .field { margin-bottom: 16px; }
+
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: #444;
+    margin-bottom: 6px;
+  }
+
+  input[type="text"], input[type="password"] {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 9px 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #1a1a1a;
+    background: #fafafa;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  input:focus { border-color: #1a1a1a; background: #fff; }
+  input::placeholder { color: #bbb; }
+
+  .input-row { position: relative; }
+  .input-row input { padding-right: 52px; }
+  .toggle-vis {
+    position: absolute; right: 10px; top: 50%;
+    transform: translateY(-50%);
+    background: none; border: none; cursor: pointer;
+    font-size: 11px; color: #999;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .toggle-vis:hover { color: #444; }
+
+  /* WiFi */
+  .row-between {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .row-label { font-size: 12px; font-weight: 500; color: #444; }
+
+  .btn-scan {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #444;
+    background: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 3px 9px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-scan:hover { border-color: #999; }
+  .btn-scan:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .wifi-list {
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 18px;
+    min-height: 42px;
+  }
+
+  .wifi-item {
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.1s;
+  }
+  .wifi-item:last-child { border-bottom: none; }
+  .wifi-item:hover { background: #f9f9f9; }
+  .wifi-item.selected { background: #f5f5f5; border-left: 2px solid #1a1a1a; }
+
+  .wifi-left { display: flex; align-items: center; gap: 8px; color: #1a1a1a; }
+  .wifi-lock { font-size: 11px; color: #aaa; font-family: 'JetBrains Mono', monospace; }
+
+  .bars { display: flex; align-items: flex-end; gap: 2px; height: 12px; }
+  .bars i { width: 3px; border-radius: 1px; display: block; background: #ddd; }
+  .bars i:nth-child(1) { height: 4px; }
+  .bars i:nth-child(2) { height: 8px; }
+  .bars i:nth-child(3) { height: 12px; }
+  .bars.strong i { background: #22c55e; }
+  .bars.medium i:nth-child(1), .bars.medium i:nth-child(2) { background: #f59e0b; }
+  .bars.weak   i:nth-child(1) { background: #ef4444; }
+
+  .wifi-empty { padding: 14px; text-align: center; font-size: 13px; color: #aaa; }
+
+  .divider {
+    text-align: center; font-size: 12px; color: #bbb;
+    margin: 14px 0; position: relative;
+  }
+  .divider::before, .divider::after {
+    content: ''; position: absolute; top: 50%;
+    width: 44%; height: 1px; background: #e5e5e5;
+  }
+  .divider::before { left: 0; }
+  .divider::after  { right: 0; }
+
+  /* Buttons */
+  .btn {
+    width: 100%; padding: 10px;
+    border: none; border-radius: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-primary  { background: #1a1a1a; color: #fff; }
+  .btn-primary:hover    { background: #333; }
+  .btn-primary:disabled { background: #e5e5e5; color: #aaa; cursor: not-allowed; }
+  .btn-ghost {
+    background: transparent; color: #666;
+    border: 1px solid #ddd; margin-top: 8px;
+  }
+  .btn-ghost:hover { border-color: #999; color: #1a1a1a; }
+
+  .spinner {
+    display: inline-block; width: 13px; height: 13px;
+    border: 2px solid rgba(255,255,255,.3);
+    border-top-color: #fff; border-radius: 50%;
+    animation: spin .7s linear infinite;
+    vertical-align: middle; margin-right: 6px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Alert */
+  .alert {
+    border-radius: 5px; padding: 9px 13px;
+    font-size: 13px; margin-bottom: 14px;
+    border-left: 3px solid;
+  }
+  .alert-ok   { background: #f0fdf4; border-color: #22c55e; color: #166534; }
+  .alert-warn { background: #fffbeb; border-color: #f59e0b; color: #92400e; }
+  .alert-err  { background: #fef2f2; border-color: #ef4444; color: #991b1b; }
+
+  /* Telegram */
+  .instr-box {
+    background: #fafafa; border: 1px solid #e5e5e5;
+    border-radius: 6px; padding: 14px 16px;
+    margin-bottom: 16px; font-size: 13px;
+    color: #444; line-height: 1.9;
+  }
+  .instr-box ol { padding-left: 16px; }
+  .instr-box code {
+    font-family: 'JetBrains Mono', monospace;
+    background: #eee; padding: 1px 5px;
+    border-radius: 3px; font-size: 12px; color: #1a1a1a;
+  }
+
+  .code-box {
+    border: 1px solid #e5e5e5; border-radius: 6px;
+    padding: 18px; text-align: center;
+    background: #fafafa; margin-bottom: 16px;
+  }
+  .code-lbl {
+    font-size: 11px; color: #aaa;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 1px; text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .code-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 30px; font-weight: 500;
+    color: #1a1a1a; letter-spacing: 8px;
+  }
+  .code-timer {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: #aaa; margin-top: 6px;
+  }
+  .code-timer.urgent { color: #ef4444; }
+
+  .poll-note {
+    text-align: center; font-size: 12px;
+    color: #aaa; margin-top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Success */
+  .success-box { text-align: center; padding: 8px 0 16px; }
+  .check { font-size: 36px; margin-bottom: 12px; }
+  .success-title { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+  .success-desc { font-size: 13px; color: #666; line-height: 1.6; margin-bottom: 20px; }
+
+  .summary {
+    border: 1px solid #e5e5e5; border-radius: 6px;
+    overflow: hidden; margin-bottom: 20px; text-align: left;
+  }
+  .s-row {
+    display: flex; justify-content: space-between;
+    padding: 9px 14px; border-bottom: 1px solid #f0f0f0;
+    font-size: 13px;
+  }
+  .s-row:last-child { border-bottom: none; }
+  .s-key { color: #666; }
+  .s-val { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #1a1a1a; }
+
+  .bot-note {
+    font-size: 12px; color: #666; line-height: 1.6;
+    background: #fafafa; border: 1px solid #e5e5e5;
+    border-radius: 6px; padding: 12px 14px; text-align: left;
+  }
+  .bot-note code {
+    font-family: 'JetBrains Mono', monospace;
+    background: #eee; padding: 1px 5px;
+    border-radius: 3px; font-size: 11px;
+  }
+
+  /* Modal */
+  .modal-bg {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,.4); z-index: 50;
+    align-items: center; justify-content: center; padding: 20px;
+  }
+  .modal-bg.open { display: flex; }
+
+  .modal {
+    background: #fff; border: 1px solid #e5e5e5;
+    border-radius: 8px; padding: 28px;
+    max-width: 400px; width: 100%;
+  }
+
+  .modal-title { font-size: 14px; font-weight: 600; margin-bottom: 18px; }
+
+  .m-group { margin-bottom: 14px; }
+  .m-label { font-size: 11px; color: #aaa; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 3px; }
+  .m-val   { font-size: 13px; color: #1a1a1a; line-height: 1.6; }
+
+  .modal-close {
+    width: 100%; margin-top: 20px; padding: 9px;
+    background: none; border: 1px solid #ddd;
+    border-radius: 6px; font-size: 13px;
+    color: #666; cursor: pointer; transition: all .2s;
+  }
+  .modal-close:hover { border-color: #999; color: #1a1a1a; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <div class="brand-name">Aegnis</div>
+        <div class="brand-sub">Sistema de Detección de Incendios<br>con Alertas por Mensajería</div>
+      </div>
+      <button class="btn-about" onclick="document.getElementById('modal').classList.add('open')">Acerca de</button>
+    </div>
+  </div>
+  <hr>
+
+  <!-- Status -->
+  <div class="status-bar">
+    <div class="dot" id="statusDot"></div>
+    <span id="statusText">Cargando estado...</span>
+  </div>
+
+  <!-- Steps -->
+  <div class="steps">
+    <div class="step">
+      <div class="step-num active" id="sn1">1</div>
+      <div class="step-lbl active" id="sl1">Red WiFi</div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step">
+      <div class="step-num" id="sn2">2</div>
+      <div class="step-lbl" id="sl2">Telegram</div>
+    </div>
+    <div class="step-line"></div>
+    <div class="step">
+      <div class="step-num" id="sn3">3</div>
+      <div class="step-lbl" id="sl3">Listo</div>
+    </div>
+  </div>
+
+  <!-- Paso 1 -->
+  <div class="card active" id="card1">
+    <div class="card-title">Configurar red WiFi</div>
+    <div class="card-desc">Selecciona una red o ingrésala manualmente. El sistema necesita internet para enviar alertas por Telegram.</div>
+
+    <div class="row-between">
+      <div class="row-label">Redes disponibles</div>
+      <button class="btn-scan" id="btnScan" onclick="scanWifi()">Escanear</button>
+    </div>
+
+    <div class="wifi-list" id="wifiList">
+      <div class="wifi-empty">Presiona escanear para buscar redes.</div>
+    </div>
+
+    <div class="divider">o ingresar manualmente</div>
+
+    <div class="field">
+      <label>Nombre de red (SSID)</label>
+      <input type="text" id="ssid" placeholder="Nombre de la red WiFi">
+    </div>
+    <div class="field">
+      <label>Contraseña</label>
+      <div class="input-row">
+        <input type="password" id="wifiPass" placeholder="Contraseña">
+        <button class="toggle-vis" onclick="togglePass(this)">ver</button>
+      </div>
+    </div>
+
+    <div id="alertWifi"></div>
+    <button class="btn btn-primary" id="btnWifi" onclick="conectarWifi()">Conectar</button>
+  </div>
+
+  <!-- Paso 2 -->
+  <div class="card" id="card2">
+    <div class="card-title">Vincular Telegram</div>
+    <div class="card-desc">Solo un número puede ser el propietario principal. Sigue los pasos para vincularte como padre del sistema.</div>
+
+    <div class="instr-box">
+      <ol>
+        <li>Abre Telegram y busca <code>@incendios_alerta_bot</code></li>
+        <li>Manda el comando <code>/vincular</code></li>
+        <li>Cuando el bot lo pida, responde con el código de abajo</li>
+      </ol>
+    </div>
+
+    <div class="code-box">
+      <div class="code-lbl">Código de vinculación</div>
+      <div class="code-val" id="codeVal">——</div>
+      <div class="code-timer" id="codeTimer">—</div>
+    </div>
+
+    <div id="alertTg"></div>
+    <button class="btn btn-primary" id="btnTg" onclick="verificarTg()">
+      <span id="btnTgTxt">Verificar vinculación</span>
+    </button>
+    <button class="btn btn-ghost" onclick="nuevocodigo()">Generar nuevo código</button>
+    <button class="btn btn-ghost" onclick="setStep(1)" style="margin-top:4px;color:#aaa;font-size:13px;">← Cambiar red WiFi</button>
+    <p class="poll-note" id="pollNote"></p>
+  </div>
+
+  <!-- Paso 3 -->
+  <div class="card" id="card3">
+    <div class="success-box">
+      <div class="check">✓</div>
+      <div class="success-title">Sistema configurado</div>
+      <div class="success-desc">Aegnis está activo y monitoreando. Las alertas llegarán por Telegram a todos los usuarios vinculados.</div>
+      <div class="summary" id="summaryBox"></div>
+      <div class="bot-note">
+        Para cambiar la red WiFi, agregar usuarios o consultar el estado, usa los comandos del bot
+        <code>@incendios_alerta_bot</code> en Telegram.
+      </div>
+      <button class="btn btn-ghost" onclick="setStep(1)" style="margin-top:16px;color:#aaa;font-size:13px;">← Reconfigurar desde el inicio</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal-bg" id="modal" onclick="cerrarModal(event)">
+  <div class="modal">
+    <div class="modal-title">Acerca del proyecto</div>
+    <div class="m-group">
+      <div class="m-label">Carrera</div>
+      <div class="m-val">Ingeniero en Sistemas Computacionales</div>
+    </div>
+    <div class="m-group">
+      <div class="m-label">Semestre y grupo</div>
+      <div class="m-val">8E</div>
+    </div>
+    <div class="m-group">
+      <div class="m-label">Integrantes</div>
+      <div class="m-val">
+        Hernandez Ruiz Haydee Michelle<br>
+        Montoya Garza Luis Angel<br>
+        Silva Sanchez Yamilka Arely<br>
+        Rueda Martinez Alison Michelle
+      </div>
+    </div>
+    <div class="m-group">
+      <div class="m-label">Asignaturas</div>
+      <div class="m-val">
+        Inteligencia Artificial<br>
+        Diseño Electrónico Basado en Sistemas Embebidos
+      </div>
+    </div>
+    <div class="m-group">
+      <div class="m-label">Docentes</div>
+      <div class="m-val">
+        Dr. Daniel López Piña<br>
+        Dr. Ángel Mario Lerma Sánchez
+      </div>
+    </div>
+    <button class="modal-close" onclick="document.getElementById('modal').classList.remove('open')">Cerrar</button>
+  </div>
+</div>
+
+<script>
+  let codeInterval = null, pollInterval = null, secsLeft = 300;
+
+  function setStatus(msg, type) {
+    document.getElementById('statusDot').className = 'dot' + (type ? ' '+type : '');
+    document.getElementById('statusText').textContent = msg;
+  }
+
+  function showAlert(id, msg, type) {
+    document.getElementById(id).innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
+    if (type !== 'err') setTimeout(() => document.getElementById(id).innerHTML = '', 5000);
+  }
+
+  function setStep(n) {
+    [1,2,3].forEach(i => {
+      document.getElementById('card'+i).classList.remove('active');
+      const sn = document.getElementById('sn'+i);
+      const sl = document.getElementById('sl'+i);
+      sn.className = 'step-num' + (i<n?' done':i===n?' active':'');
+      sn.textContent = i<n ? '✓' : i;
+      sl.className = 'step-lbl' + (i<n?' done':i===n?' active':'');
+    });
+    document.getElementById('card'+n).classList.add('active');
+  }
+
+  async function scanWifi() {
+    const btn = document.getElementById('btnScan');
+    btn.textContent = 'Escaneando...'; btn.disabled = true;
+    try {
+      const r = await fetch('/api/wifi/scan');
+      const d = await r.json();
+      renderWifi(d.redes || []);
+    } catch {
+      document.getElementById('wifiList').innerHTML = '<div class="wifi-empty">Error al escanear.</div>';
+    }
+    btn.textContent = 'Escanear'; btn.disabled = false;
+  }
+
+  function renderWifi(redes) {
+    const el = document.getElementById('wifiList');
+    if (!redes.length) { el.innerHTML = '<div class="wifi-empty">No se encontraron redes.</div>'; return; }
+    el.innerHTML = redes.map(r => `
+      <div class="wifi-item" onclick="selRed('${r.ssid}',this)">
+        <div class="wifi-left">
+          <span class="wifi-lock">${r.lock?'lock':'open'}</span>
+          <span>${r.ssid}</span>
+        </div>
+        <div class="bars ${r.signal}"><i></i><i></i><i></i></div>
+      </div>`).join('');
+  }
+
+  function selRed(ssid, el) {
+    document.querySelectorAll('.wifi-item').forEach(i=>i.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('ssid').value = ssid;
+  }
+
+  function togglePass(btn) {
+    const inp = document.getElementById('wifiPass');
+    inp.type = inp.type==='password' ? 'text' : 'password';
+    btn.textContent = inp.type==='password' ? 'ver' : 'ocultar';
+  }
+
+  async function conectarWifi() {
+    const ssid = document.getElementById('ssid').value.trim();
+    const pass = document.getElementById('wifiPass').value;
+    if (!ssid) { showAlert('alertWifi','Ingresa el nombre de la red.','warn'); return; }
+    const btn = document.getElementById('btnWifi');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Conectando...';
+    try {
+      const r = await fetch('/api/wifi/connect',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ssid,pass})});
+      const d = await r.json();
+      if (d.ok) {
+        showAlert('alertWifi',`Conectado a "${ssid}".`,'ok');
+        setStatus(`WiFi: ${ssid}`,'ok');
+        setTimeout(()=>{setStep(2);pedirCodigo();},1200);
+      } else { showAlert('alertWifi',`Error: ${d.error}`,'err'); }
+    } catch { showAlert('alertWifi','No se pudo conectar.','err'); }
+    btn.disabled = false; btn.textContent = 'Conectar';
+  }
+
+  async function pedirCodigo() {
+    try {
+      const r = await fetch('/api/telegram/code');
+      const d = await r.json();
+      if (d.ok) {
+        document.getElementById('codeVal').textContent = d.codigo;
+        iniciarTimer(d.expira_en||300);
+        iniciarPoll();
+      }
+    } catch { document.getElementById('codeTimer').textContent = 'Error al generar código.'; }
+  }
+
+  function iniciarTimer(seg) {
+    clearInterval(codeInterval); secsLeft = seg;
+    codeInterval = setInterval(()=>{
+      secsLeft--;
+      const m = Math.floor(secsLeft/60), s = String(secsLeft%60).padStart(2,'0');
+      const el = document.getElementById('codeTimer');
+      el.textContent = `Expira en ${m}:${s}`;
+      el.className = 'code-timer'+(secsLeft<60?' urgent':'');
+      if (secsLeft<=0) {
+        clearInterval(codeInterval); clearInterval(pollInterval);
+        document.getElementById('codeVal').textContent='——';
+        el.textContent='Código expirado. Genera uno nuevo.';
+        document.getElementById('pollNote').textContent='';
+      }
+    },1000);
+  }
+
+  function iniciarPoll() {
+    clearInterval(pollInterval);
+    document.getElementById('pollNote').textContent='Esperando vinculación...';
+    pollInterval = setInterval(async()=>{
+      try {
+        const r = await fetch('/api/telegram/verify');
+        const d = await r.json();
+        if (d.ok) { clearInterval(pollInterval); clearInterval(codeInterval); completar(d.chat_id); }
+      } catch {}
+    },3000);
+  }
+
+  function completar(chatId) {
+    showAlert('alertTg','Propietario vinculado correctamente.','ok');
+    document.getElementById('pollNote').textContent='';
+    setTimeout(()=>{setStep(3);cargarResumen(chatId);},900);
+  }
+
+  async function nuevocodigo() {
+    clearInterval(codeInterval); clearInterval(pollInterval);
+    document.getElementById('pollNote').textContent='';
+    await pedirCodigo();
+  }
+
+  async function verificarTg() {
+    const btn = document.getElementById('btnTg'), txt = document.getElementById('btnTgTxt');
+    btn.disabled=true; txt.innerHTML='<span class="spinner"></span>Verificando...';
+    try {
+      const r = await fetch('/api/telegram/verify');
+      const d = await r.json();
+      if (d.ok) { completar(d.chat_id); }
+      else if (d.pendiente) { showAlert('alertTg','Aún no se ha recibido el código.','warn'); }
+      else { showAlert('alertTg',d.error||'Error de verificación.','err'); }
+    } catch { showAlert('alertTg','Error de conexión.','err'); }
+    btn.disabled=false; txt.textContent='Verificar vinculación';
+  }
+
+  async function cargarResumen(chatId) {
+    const ssid = document.getElementById('ssid').value||'—';
+    let modelo = '—';
+    try { const r=await fetch('/api/status'); const d=await r.json(); modelo=d.modelo_ok?'OK':'No encontrado'; } catch {}
+    document.getElementById('summaryBox').innerHTML=[
+      ['Red WiFi',ssid],['Propietario','Vinculado'],
+      ['Chat ID',chatId||'—'],['Modelo',modelo],['Estado','En línea'],
+    ].map(([k,v])=>`<div class="s-row"><span class="s-key">${k}</span><span class="s-val">${v}</span></div>`).join('');
+    setStatus('Aegnis activo','ok');
+  }
+
+  async function init() {
+    try {
+      const r = await fetch('/api/status'); const d = await r.json();
+      if (d.owner_vinculado) {
+        setStatus(`WiFi: ${d.wifi_ssid||'conectado'} — Activo`,'ok');
+        document.getElementById('ssid').value = d.wifi_ssid||'';
+        setStep(3); cargarResumen(d.chat_id);
+      } else if (d.wifi_ssid) {
+        setStatus(`WiFi: ${d.wifi_ssid} — Sin propietario`,'ok');
+        setStep(2); pedirCodigo();
+      } else { setStatus('Sin configurar',''); }
+    } catch { setStatus('Servidor listo',''); }
+  }
+
+  function cerrarModal(e) {
+    if (e.target===document.getElementById('modal'))
+      document.getElementById('modal').classList.remove('open');
+  }
+
+  init();
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+[Unit]
+Description=FireGuard - Detector de incendios (cámara + YOLO)
+After=network.target fireguard-setup.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=fisica1
+WorkingDirectory=/home/fisica1/sistema_incendios
+# DISPLAY vacío = sin ventana de video. El sistema corre en background.
+Environment=DISPLAY=
+ExecStart=/usr/bin/python3 /home/fisica1/sistema_incendios/detector.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

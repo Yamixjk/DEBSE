@@ -1,0 +1,15 @@
+[Unit]
+Description=Aegnis - Controlador de LED RGB
+After=fireguard-setup.service fireguard-detect.service
+Wants=fireguard-setup.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/home/fisica1/sistema_incendios
+ExecStart=/home/fisica1/sistema_incendios/venv/bin/python3 /home/fisica1/sistema_incendios/led.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

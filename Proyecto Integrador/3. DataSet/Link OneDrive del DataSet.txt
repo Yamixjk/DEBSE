@@ -1,0 +1,13 @@
+Sistema de Detección de Incendios con Alertas por Mensajería ( Aegnis)
+Link OneDrive del DataSet :
+https://alumnosuatedu-my.sharepoint.com/:f:/g/personal/a2223520213_alumnos_uat_edu_mx/IgA6--CXIzESSpG9VCJquakAAUEDmplyp3jgPEfXsANegD0?e=CDhquI
+
+Integrantes : 
+   Hernández Ruiz Haydee Michelle, 
+   Montoya Garza Luis Ángel, 
+   Silva Sánchez Yamilka Arely, 
+   Rueda Martínez Alison Michelle.
+
+Asesores : 
+   Dr. Daniel López Piña, 
+   Dr. Ángel Mario Lerma Sánchez.
